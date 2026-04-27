@@ -3,7 +3,7 @@
 |    NRP     |           Nama             |
 | :--------: |       :------------:       |
 | 50252510.. |   Aga Nafta Filadelfiano   |
-| 50252510.. |                            |
+| 5025251061 |     Bayu Setyo Nugroho     |
 | 50252510.. |                            |
 
 ## Langkah-langkah & Potongan Kode

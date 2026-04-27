@@ -64,22 +64,22 @@ frame_in.pack(pady=10)
 tk.Label(frame_in, text="f(x):").grid(row=0, column=0)
 entry_f = tk.Entry(frame_in, width=15); 
 entry_f.grid(row=0, column=1); 
-entry_f.insert(0, "(1 - 0.6*x)/x")
+entry_f.insert(0, "x**2 + 5*x -3")
 
 tk.Label(frame_in, text=" x1:").grid(row=0, column=2)
 entry_x1 = tk.Entry(frame_in, width=5); 
 entry_x1.grid(row=0, column=3); 
-entry_x1.insert(0, "1")
+entry_x1.insert(0, "0")
 
 tk.Label(frame_in, text=" x2:").grid(row=0, column=4)
 entry_x2 = tk.Entry(frame_in, width=5); 
 entry_x2.grid(row=0, column=5); 
-entry_x2.insert(0, "2")
+entry_x2.insert(0, "1")
 
 tk.Label(frame_in, text=" Iterasi:").grid(row=0, column=6)
 entry_n = tk.Entry(frame_in, width=5); 
 entry_n.grid(row=0, column=7); 
-entry_n.insert(0, "5")
+entry_n.insert(0, "10")
 
 tk.Button(frame_in, text="Hitung", command=hitung_regula_falsi).grid(row=0, column=8, padx=10)
 

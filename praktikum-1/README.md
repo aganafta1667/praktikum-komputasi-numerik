@@ -132,11 +132,76 @@ bayu&aga
 ### 8. ...
 ### 9. ...
 ### 10. ...
-### 11. ...
-### 12. ...
-### 13. ...
-### 14. ...
-### 15. ...
+
+### Inisialisasi Jendela Utama
+```py
+root = tk.Tk()
+root.title("Metode Regula Falsi")
+root.geometry("750x500")
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(1, weight=3)
+root.grid_rowconfigure(5, weight=1)
+```
+- `tk.Tk()`: Membuat jendela utama aplikasi.
+- title & geometry: Mengatur judul dan ukuran jendela.
+- `grid_columnconfigure`: Mengatur perbandingan lebar kolom saat jendela ditarik atau diperbesar.
+
+### Pengaturan Gaya (Styling)
+```py
+style = ttk.Style()
+style.configure("Treeview", font=("Consolas", 9), rowheight=22)
+style.configure("Treeview.Heading", font=("Consolas", 10, "bold"))
+```
+- `ttk.Style()`: Mengubah tampilan widget standar.
+- `font=("Consolas", 9)`: Menggunakan font monospaced (Consolas).
+
+### Panel Input Parameter
+```py
+tk.Label(root, text="f(x):").grid(row=0, column=0, sticky="w", padx=5)
+input_fungsi = tk.Entry(root)
+input_fungsi.grid(row=0, column=1, sticky="ew", padx=5, pady=2)
+input_fungsi.insert(0, "(1 - 0.6*x)/x")
+```
+- `tk.Label`: Menampilkan teks sebagai keterangan di sebelah kiri.
+- `tk.Entry`: Kotak putih tempat user mengetikkan nilai.
+- `.grid(...)`: Menempatkan widget menggunakan sistem koordinat row dan column.
+- `sticky="ew"`: Membuat kotak input melebar mengikuti lebar kolom.
+- `.insert(0, "...")`: Memberikan nilai default di dalam kotak.
+- Kode ini berulang untuk x1, x2, dan Iterasi
+
+### Tombol Eksekusi
+```py
+tk.Button(root, text="Hitung", command=regula_falsi)\
+    .grid(row=4, column=0, columnspan=2, pady=10)
+```
+- `command=regula_falsi`: Menghubungkan tombol dengan fungsi logika regula_falsi yang sudah ada.
+- `columnspan=2`: Membuat tombol berada di tengah-tengah dengan ruang dua kolom sekaligus.
+
+### Tabel Hasil Iterasi (Treeview)
+```py
+columns = ("Iterasi", "xr", "f(xr)", "Error")
+tree = ttk.Treeview(root, columns=columns, show="headings", height=8)
+tree.heading("Iterasi", text="Iterasi")
+tree.column("Iterasi", anchor="center", width=70)
+```
+- `ttk.Treeview`: Untuk membuat tabel.
+- columns: Menampilkan judul kolom.
+- `anchor="center"`: Membuat data angka di dalam tabel berada di posisi tengah.
+
+### Scrollbar dan Label Hasil
+```py
+scrollbar = ttk.Scrollbar(root, orient="vertical", command=tree.yview)
+tree.configure(yscroll=scrollbar.set)
+label_hasil = tk.Label(root, text="Akar ≈ -", font=("Arial", 12, "bold"))
+```
+- `ttk.Scrollbar`: Membuat fitur scrool bila iterasi yang ditampilkan sangat banyak.
+- `label_hasil`: Menampilkan jawaban akhir.
+
+### Penutup (Loop Utama)
+```py
+root.mainloop()
+```
+Bertujuan agar program terus berjalan untuk mendengarkan klik/input dari user.
 
 
 ## Screenshot Hasil Program 

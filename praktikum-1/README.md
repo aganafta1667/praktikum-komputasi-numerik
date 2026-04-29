@@ -133,7 +133,7 @@ bayu&aga
 ### 9. ...
 ### 10. ...
 
-### Inisialisasi Jendela Utama
+### Inisialisasi Jendela Program
 ```py
 root = tk.Tk()
 root.title("Metode Regula Falsi")
@@ -146,7 +146,7 @@ root.grid_rowconfigure(5, weight=1)
 - title & geometry: Mengatur judul dan ukuran jendela.
 - `grid_columnconfigure`: Mengatur perbandingan lebar kolom saat jendela ditarik atau diperbesar.
 
-### Pengaturan Gaya (Styling)
+### Membuat Styling
 ```py
 style = ttk.Style()
 style.configure("Treeview", font=("Consolas", 9), rowheight=22)
@@ -155,7 +155,7 @@ style.configure("Treeview.Heading", font=("Consolas", 10, "bold"))
 - `ttk.Style()`: Mengubah tampilan widget standar.
 - `font=("Consolas", 9)`: Menggunakan font monospaced (Consolas).
 
-### Panel Input Parameter
+### Membuat Panel Input
 ```py
 tk.Label(root, text="f(x):").grid(row=0, column=0, sticky="w", padx=5)
 input_fungsi = tk.Entry(root)
@@ -169,7 +169,7 @@ input_fungsi.insert(0, "(1 - 0.6*x)/x")
 - `.insert(0, "...")`: Memberikan nilai default di dalam kotak.
 - Kode ini berulang untuk x1, x2, dan Iterasi
 
-### Tombol Eksekusi
+### Menambahkan Tombol Eksekusi
 ```py
 tk.Button(root, text="Hitung", command=regula_falsi)\
     .grid(row=4, column=0, columnspan=2, pady=10)
@@ -177,7 +177,7 @@ tk.Button(root, text="Hitung", command=regula_falsi)\
 - `command=regula_falsi`: Menghubungkan tombol dengan fungsi logika regula_falsi yang sudah ada.
 - `columnspan=2`: Membuat tombol berada di tengah-tengah dengan ruang dua kolom sekaligus.
 
-### Tabel Hasil Iterasi (Treeview)
+### Menampilkan Tabel Hasil Iterasi
 ```py
 columns = ("Iterasi", "xr", "f(xr)", "Error")
 tree = ttk.Treeview(root, columns=columns, show="headings", height=8)
@@ -188,7 +188,7 @@ tree.column("Iterasi", anchor="center", width=70)
 - columns: Menampilkan judul kolom.
 - `anchor="center"`: Membuat data angka di dalam tabel berada di posisi tengah.
 
-### Scrollbar dan Label Hasil
+### Menambahkan Scrollbar dan Hasil Akhir
 ```py
 scrollbar = ttk.Scrollbar(root, orient="vertical", command=tree.yview)
 tree.configure(yscroll=scrollbar.set)
@@ -197,7 +197,7 @@ label_hasil = tk.Label(root, text="Akar ≈ -", font=("Arial", 12, "bold"))
 - `ttk.Scrollbar`: Membuat fitur scrool bila iterasi yang ditampilkan sangat banyak.
 - `label_hasil`: Menampilkan jawaban akhir.
 
-### Penutup (Loop Utama)
+### Melakukan Perulangan
 ```py
 root.mainloop()
 ```

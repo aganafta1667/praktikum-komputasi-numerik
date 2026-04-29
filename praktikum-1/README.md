@@ -137,52 +137,37 @@ bayu&aga
 ```py
 root = tk.Tk()
 root.title("Metode Regula Falsi")
-root.geometry("750x500")
-root.grid_columnconfigure(0, weight=1)
-root.grid_columnconfigure(1, weight=3)
-root.grid_rowconfigure(5, weight=1)
 ```
-- `tk.Tk()`: Membuat jendela utama aplikasi.
-- title & geometry: Mengatur judul dan ukuran jendela.
-- `grid_columnconfigure`: Mengatur perbandingan lebar kolom saat jendela ditarik atau diperbesar.
-
-### Membuat Styling
-```py
-style = ttk.Style()
-style.configure("Treeview", font=("Consolas", 9), rowheight=22)
-style.configure("Treeview.Heading", font=("Consolas", 10, "bold"))
-```
-- `ttk.Style()`: Mengubah tampilan widget standar.
-- `font=("Consolas", 9)`: Menggunakan font monospaced (Consolas).
+- `root=tk.Tk()`: Membuat jendela utama program.
+- `root.title`: Mengatur judul program.
 
 ### Membuat Panel Input
 ```py
-tk.Label(root, text="f(x):").grid(row=0, column=0, sticky="w", padx=5)
-input_fungsi = tk.Entry(root)
-input_fungsi.grid(row=0, column=1, sticky="ew", padx=5, pady=2)
-input_fungsi.insert(0, "(1 - 0.6*x)/x")
+tk.Label(frame_in, text="f(x):").grid(row=0, column=0)
+entry_f = tk.Entry(frame_in, width=15); 
+entry_f.grid(row=0, column=1); 
+entry_f.insert(0, "x**2 + 5*x -3")
 ```
 - `tk.Label`: Menampilkan teks sebagai keterangan di sebelah kiri.
 - `tk.Entry`: Kotak putih tempat user mengetikkan nilai.
 - `.grid(...)`: Menempatkan widget menggunakan sistem koordinat row dan column.
-- `sticky="ew"`: Membuat kotak input melebar mengikuti lebar kolom.
 - `.insert(0, "...")`: Memberikan nilai default di dalam kotak.
 - Kode ini berulang untuk x1, x2, dan Iterasi
 
 ### Menambahkan Tombol Eksekusi
 ```py
-tk.Button(root, text="Hitung", command=regula_falsi)\
-    .grid(row=4, column=0, columnspan=2, pady=10)
+tk.Button(frame_in, text="Hitung", command=hitung_regula_falsi).grid(row=0, column=8, padx=10)
 ```
-- `command=regula_falsi`: Menghubungkan tombol dengan fungsi logika regula_falsi yang sudah ada.
-- `columnspan=2`: Membuat tombol berada di tengah-tengah dengan ruang dua kolom sekaligus.
+- `command=hitung_regula_falsi`: Menghubungkan tombol dengan fungsi logika regula_falsi yang sudah ada.
 
 ### Menampilkan Tabel Hasil Iterasi
 ```py
-columns = ("Iterasi", "xr", "f(xr)", "Error")
-tree = ttk.Treeview(root, columns=columns, show="headings", height=8)
-tree.heading("Iterasi", text="Iterasi")
-tree.column("Iterasi", anchor="center", width=70)
+cols = ("Iter", "x1", "x2", "xr", "f(xr)", "Error")
+tree = ttk.Treeview(frame_out, columns=cols, show="headings", height=10)
+for c in cols: 
+    tree.heading(c, text=c)
+    tree.column(c, width=70, anchor="center")
+tree.pack(side="left", fill="y")
 ```
 - `ttk.Treeview`: Untuk membuat tabel.
 - columns: Menampilkan judul kolom.
@@ -190,12 +175,14 @@ tree.column("Iterasi", anchor="center", width=70)
 
 ### Menambahkan Scrollbar dan Hasil Akhir
 ```py
-scrollbar = ttk.Scrollbar(root, orient="vertical", command=tree.yview)
-tree.configure(yscroll=scrollbar.set)
-label_hasil = tk.Label(root, text="Akar ≈ -", font=("Arial", 12, "bold"))
+fig, ax = plt.subplots(figsize=(5, 4))
+canvas = FigureCanvasTkAgg(fig, master=frame_out)
+canvas.get_tk_widget().pack(side="right", fill="both", expand=True)
 ```
-- `ttk.Scrollbar`: Membuat fitur scrool bila iterasi yang ditampilkan sangat banyak.
-- `label_hasil`: Menampilkan jawaban akhir.
+- `plt.subplots()`: Untuk membuat dua objek sekaligus, yaitu fig dan ax.
+- `FigureCanvasTkAgg`: Sebagai penghubung agar Matplotlib dikenali oleh Tkinter.
+- `fill="both"`: Untuk membuat grafik untuk memenuhi ruang yang tersedia.
+- `expand=True`: Agar grafik bersifat responsif, dimana bila user memperbesar jendela, maka grafik akan ikut membesar secara otomatis.
 
 ### Melakukan Perulangan
 ```py

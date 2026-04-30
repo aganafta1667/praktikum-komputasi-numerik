@@ -6,9 +6,12 @@
 | 5025251061 |     Bayu Setyo Nugroho     |
 | 5025251067 |     Azka Fairus Syamsa     |
 
+
+
 ## Metode Regula Falsi
 Metode Regula Falsi atau disebut juga Metode Posisi Salah adalah salah satu metode akolade untuk menetukan akar persamaan sebuah fungsi. Metode ini sebenarnya menyerupai Metode Bolzano (Biseksi), namun memiliki tingkat konvergensi yang jauh lebih cepat sehingga hasilnya juga lebih baik. Pada dasarnya, metode ini bekerja dengan meng-interpolasi-kan 2 nilai fungsi yang berlawanan tanda.
 <img width="720" height="502" alt="image" src="https://github.com/user-attachments/assets/544bff50-6871-4a03-8197-5a73d45ddd72" />
+
 
 
 ## Cara Pengerjaan Metode Regula Falsi
@@ -21,6 +24,15 @@ Metode Regula Falsi atau disebut juga Metode Posisi Salah adalah salah satu meto
 - Jika f(x3) ⋅ f(x2) < 0, maka akarnya terletak di antara x2 dan x3. Tetapkan x1 = x3.
 
 *Langkah 4 :* Ulangi langkah-langkah tersebut (iterasi) hingga nilai |f(x3)| mendekati toleransi nilai eror yang telah ditentukan, maka x3 adalah akar persamaan yang dicari.
+
+***Rumus Regula Falsi***
+
+<img width="309" height="104" alt="image" src="https://github.com/user-attachments/assets/d14eb340-cba9-46ba-a073-cd75eb9d154a" />
+
+atau sama dengan
+
+<img width="313" height="125" alt="image" src="https://github.com/user-attachments/assets/dbfbc2cb-c1f6-4f73-94a7-4a0b99884ae7" />
+
 
 ## Implementasi Algoritma Metode Regula Falsi (python)
 [regulaFalsi.py](regulaFalsi.py)

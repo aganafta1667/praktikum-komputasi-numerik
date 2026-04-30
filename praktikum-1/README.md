@@ -147,7 +147,43 @@ def hitung_regula_falsi():
 
 - `if fx1 * fxr < 0` : Logika pembaruan batas; jika tanda fungsi di xr sama dengan x1, maka x1 digantikan oleh xr, dan sebaliknya.
 
-abs((xr - xr_old) / xr) * 100 : Menghitung persentase galat (error) relatif untuk setiap iterasi.
+- `abs((xr - xr_old) / xr) * 100` : Menghitung persentase galat (error) relatif untuk setiap iterasi.
+
+### Menampilkan Data pada Tabel (Treeview)
+```py
+cols = ("Iter", "x1", "x2", "xr", "f(xr)", "Error")
+tree = ttk.Treeview(frame_out, columns=cols, show="headings", height=10)
+...
+tree.insert("", "end", values=(i, f"{x1:.4f}", f"{x2:.4f}", f"{xr:.6f}", f"{fxr:.6f}", f"{err:.4f}%"))
+```
+- `ttk.Treeview` : Widget untuk membuat tabel yang rapi di dalam jendela aplikasi.
+- `show="headings"` : Menghilangkan kolom kosong (identitas) di sebelah kiri tabel.
+- `heading(c, text=c)` : Memberikan nama pada setiap kepala kolom.
+- `insert("", "end", values=...)` : Memasukkan baris data hasil perhitungan iterasi ke baris paling bawah tabel.
+
+### Visualisasi Grafik dengan Matplotlib
+```py
+fig, ax = plt.subplots(figsize=(5, 4))
+canvas = FigureCanvasTkAgg(fig, master=frame_out)
+canvas.get_tk_widget().pack(side="right", fill="both", expand=True)
+```
+- `plt.subplots` : Menyiapkan area plot untuk menggambar fungsi $f(x)$ dan posisi akar.
+- `FigureCanvasTkAgg` : "Jembatan" yang memasukkan grafik Matplotlib ke dalam jendela Tkinter.
+- `ax.clear()` : Menghapus grafik lama sebelum menggambar ulang hasil perhitungan yang baru.
+- `ax.scatter(...)` : Menandai titik-titik penting (seperti akar yang ditemukan) dengan simbol titik pada grafik.
+
+### Struktur Utama GUI (Tkinter)
+```py
+root = tk.Tk()
+root.title("Metode Regula Falsi")
+...
+root.mainloop()
+```
+- `tk.Tk()` : Inisialisasi jendela utama aplikasi.
+- `frame_in & frame_out` : Wadah (container) untuk mengelompokkan input user dan output (tabel/grafik) agar tata letak lebih terorganisir.
+- `messagebox.showerror` : Menampilkan jendela peringatan jika user memasukkan input yang salah atau terjadi error perhitungan.
+- `root.mainloop()` : Menjalankan aplikasi secara terus-menerus agar jendela tidak langsung tertutup.
+
 ### Inisialisasi Jendela Program
 ```py
 root = tk.Tk()

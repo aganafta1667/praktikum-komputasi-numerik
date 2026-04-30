@@ -135,20 +135,56 @@ bayu&aga
 ### Logika Perhitungan Regula Falsi
 ```py
 def hitung_regula_falsi():
-    ...
+    f_str = entry_f.get()
+    x1, x2 = float(entry_x1.get()), float(entry_x2.get())
+    n = int(entry_n.get())
+
+    def f(x): return eval(f_str, {"x": x, "np": np})
+
+    if f(x1) * f(x2) >= 0:
+        messagebox.showerror("Error", "f(x1) dan f(x2) harus beda tanda!")
+        return
+```
+- `entry_f.get()` : Mengambil input fungsi matematika dalam bentuk teks dari user.
+- `eval(...)` : Mengubah teks fungsi menjadi ekspresi matematika yang bisa dihitung oleh program.
+- `if f(x1) * f(x2) >= 0` : Validasi awal untuk memastikan ada akar di antara rentang x1 dan x2 sesuai syarat metode tertutup.
+- `messagebox.showerror` : Menampilkan jendela peringatan jika input user tidak memenuhi syarat perhitungan.
+
+### Proses Iterasi dan Pembaruan Tabel
+```py
+for i in range(1, n + 1):
+    fx1, fx2 = f(x1), f(x2)
     xr = x2 - (fx2 * (x1 - x2)) / (fx1 - fx2)
-    ...
+    fxr = f(xr)
+    err = abs((xr - xr_old) / xr) * 100 if i > 1 else 0
+    tree.insert("", "end", values=(i, f"{x1:.4f}", f"{x2:.4f}", f"{xr:.6f}", f"{fxr:.6f}", f"{err:.4f}%"))
+
     if fx1 * fxr < 0: x2 = xr
     else: x1 = xr
 ```
-- `xr = x2 - ...` : Rumus interpolasi linear untuk mencari titik potong garis lurus pada sumbu x.
+- `xr = x2 - ...` : Rumus utama Regula Falsi untuk mencari estimasi akar baru melalui interpolasi linear.
+- `err = ...` : Menghitung persentase galat relatif untuk melihat tingkat ketelitian setiap iterasi.
+- `tree.insert(...)` : Memasukkan hasil perhitungan setiap langkah ke dalam tabel (Treeview) agar bisa dilihat oleh user.
+- `if fx1 * fxr < 0` : Menentukan batas mana yang harus digeser untuk iterasi berikutnya (apakah x1 atau x2).
 
-- `f(x1) * f(x2) >= 0` : Mengecek syarat awal; nilai fungsi pada kedua batas harus berbeda tanda agar akar dapat ditemukan.
+### Visualisasi Grafik Interaktif
+```py
+def update_grafik(f, a, b, root_val, history):
+    ax.clear()
+    x_plt = np.linspace(a - 1, b + 1, 100)
+    ax.plot(x_plt, [f(i) for i in x_plt], label="f(x)")
+    
+    for a_i, b_i, c_i in history:
+        ax.plot([a_i, b_i], [f(a_i), f(b_i)], ':', color='gray')
+        ax.scatter(c_i, 0, color='orange', s=15)
 
-- `if fx1 * fxr < 0` : Logika pembaruan batas; jika tanda fungsi di xr sama dengan x1, maka x1 digantikan oleh xr, dan sebaliknya.
-
-- `abs((xr - xr_old) / xr) * 100` : Menghitung persentase galat (error) relatif untuk setiap iterasi.
-
+    canvas.draw()
+```
+- `ax.clear()` : Membersihkan plot lama agar grafik baru tidak bertumpuk saat tombol hitung ditekan lagi.
+- `np.linspace(...)` : Membuat rentang titik-titik koordinat untuk menggambar garis kurva fungsi f(x).
+- `ax.plot(...)` : Menggambar garis bantu (titik-titik abu-abu) yang menghubungkan dua titik batas pada setiap iterasi.
+- `canvas.draw()` : Memperbarui tampilan grafik pada jendela aplikasi agar sesuai dengan hasil perhitungan terbaru.
+  
 ### Menampilkan Data pada Tabel (Treeview)
 ```py
 cols = ("Iter", "x1", "x2", "xr", "f(xr)", "Error")
@@ -160,29 +196,6 @@ tree.insert("", "end", values=(i, f"{x1:.4f}", f"{x2:.4f}", f"{xr:.6f}", f"{fxr:
 - `show="headings"` : Menghilangkan kolom kosong (identitas) di sebelah kiri tabel.
 - `heading(c, text=c)` : Memberikan nama pada setiap kepala kolom.
 - `insert("", "end", values=...)` : Memasukkan baris data hasil perhitungan iterasi ke baris paling bawah tabel.
-
-### Visualisasi Grafik dengan Matplotlib
-```py
-fig, ax = plt.subplots(figsize=(5, 4))
-canvas = FigureCanvasTkAgg(fig, master=frame_out)
-canvas.get_tk_widget().pack(side="right", fill="both", expand=True)
-```
-- `plt.subplots` : Menyiapkan area plot untuk menggambar fungsi $f(x)$ dan posisi akar.
-- `FigureCanvasTkAgg` : "Jembatan" yang memasukkan grafik Matplotlib ke dalam jendela Tkinter.
-- `ax.clear()` : Menghapus grafik lama sebelum menggambar ulang hasil perhitungan yang baru.
-- `ax.scatter(...)` : Menandai titik-titik penting (seperti akar yang ditemukan) dengan simbol titik pada grafik.
-
-### Struktur Utama GUI (Tkinter)
-```py
-root = tk.Tk()
-root.title("Metode Regula Falsi")
-...
-root.mainloop()
-```
-- `tk.Tk()` : Inisialisasi jendela utama aplikasi.
-- `frame_in & frame_out` : Wadah (container) untuk mengelompokkan input user dan output (tabel/grafik) agar tata letak lebih terorganisir.
-- `messagebox.showerror` : Menampilkan jendela peringatan jika user memasukkan input yang salah atau terjadi error perhitungan.
-- `root.mainloop()` : Menjalankan aplikasi secara terus-menerus agar jendela tidak langsung tertutup.
 
 ### Inisialisasi Jendela Program
 ```py

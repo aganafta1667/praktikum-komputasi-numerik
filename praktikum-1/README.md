@@ -13,10 +13,13 @@ Metode Regula Falsi atau disebut juga Metode Posisi Salah adalah salah satu meto
 
 ## Cara Pengerjaan Metode Regula Falsi
 *Langkah 1 :* Pilih dua titik awal x1 dan x2 sedemikian sehingga fungsi pada titik-titik tersebut memiliki tanda yang berlawanan, yaitu f(x1) ⋅ f(x2) < 0.
+
 *Langkah 2 :* Hitung titik x3 di mana aproksimasi linear memotong sumbu x menggunakan rumus.
+
 *Langkah 3 :* Tentukan f(x3).
 - Jika f(x3) ⋅ f(x1) < 0, maka akarnya terletak di antara x1 dan x3. Tetapkan x2 = x3.
 - Jika f(x3) ⋅ f(x2) < 0, maka akarnya terletak di antara x2 dan x3. Tetapkan x1 = x3.
+
 *Langkah 4 :* Ulangi langkah-langkah tersebut (iterasi) hingga nilai |f(x3)| mendekati toleransi nilai eror yang telah ditentukan, maka x3 adalah akar persamaan yang dicari.
 
 ## Implementasi Algoritma Metode Regula Falsi (python)

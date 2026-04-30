@@ -132,7 +132,7 @@ root.mainloop()
 
 ## Penjelasan Kode Program
 
-### Logika Perhitungan Regula Falsi
+### 1. Logika Perhitungan Regula Falsi
 ```py
 def hitung_regula_falsi():
     f_str = entry_f.get()
@@ -150,7 +150,7 @@ def hitung_regula_falsi():
 - `if f(x1) * f(x2) >= 0` : Validasi awal untuk memastikan ada akar di antara rentang x1 dan x2 sesuai syarat metode tertutup.
 - `messagebox.showerror` : Menampilkan jendela peringatan jika input user tidak memenuhi syarat perhitungan.
 
-### Proses Iterasi dan Pembaruan Tabel
+### 2. Proses Iterasi dan Pembaruan Tabel
 ```py
 for i in range(1, n + 1):
     fx1, fx2 = f(x1), f(x2)
@@ -167,7 +167,7 @@ for i in range(1, n + 1):
 - `tree.insert(...)` : Memasukkan hasil perhitungan setiap langkah ke dalam tabel (Treeview) agar bisa dilihat oleh user.
 - `if fx1 * fxr < 0` : Menentukan batas mana yang harus digeser untuk iterasi berikutnya (apakah x1 atau x2).
 
-### Visualisasi Grafik Interaktif
+### 3. Visualisasi Grafik Interaktif
 ```py
 def update_grafik(f, a, b, root_val, history):
     ax.clear()
@@ -185,7 +185,7 @@ def update_grafik(f, a, b, root_val, history):
 - `ax.plot(...)` : Menggambar garis bantu (titik-titik abu-abu) yang menghubungkan dua titik batas pada setiap iterasi.
 - `canvas.draw()` : Memperbarui tampilan grafik pada jendela aplikasi agar sesuai dengan hasil perhitungan terbaru.
 
-### Inisialisasi Jendela Program
+### 4. Inisialisasi Jendela Program
 ```py
 root = tk.Tk()
 root.title("Metode Regula Falsi")
@@ -193,7 +193,7 @@ root.title("Metode Regula Falsi")
 - `root=tk.Tk()`: Membuat jendela utama program.
 - `root.title`: Mengatur judul program.
 
-### Membuat Panel Input
+### 5. Membuat Panel Input
 ```py
 tk.Label(frame_in, text="f(x):").grid(row=0, column=0)
 entry_f = tk.Entry(frame_in, width=15); 
@@ -206,13 +206,13 @@ entry_f.insert(0, "x**2 + 5*x -3")
 - `.insert(0, "...")`: Memberikan nilai default di dalam kotak.
 - Kode ini berulang untuk x1, x2, dan Iterasi
 
-### Menambahkan Tombol Eksekusi
+### 6. Menambahkan Tombol Eksekusi
 ```py
 tk.Button(frame_in, text="Hitung", command=hitung_regula_falsi).grid(row=0, column=8, padx=10)
 ```
 - `command=hitung_regula_falsi`: Menghubungkan tombol dengan fungsi logika regula_falsi yang sudah ada.
 
-### Menampilkan Tabel Hasil Iterasi
+### 7. Menampilkan Tabel Hasil Iterasi
 ```py
 cols = ("Iter", "x1", "x2", "xr", "f(xr)", "Error")
 tree = ttk.Treeview(frame_out, columns=cols, show="headings", height=10)
@@ -225,7 +225,7 @@ tree.pack(side="left", fill="y")
 - columns: Menampilkan judul kolom.
 - `anchor="center"`: Membuat data angka di dalam tabel berada di posisi tengah.
 
-### Menambahkan Scrollbar dan Hasil Akhir
+### 8. Menambahkan Scrollbar dan Hasil Akhir
 ```py
 fig, ax = plt.subplots(figsize=(5, 4))
 canvas = FigureCanvasTkAgg(fig, master=frame_out)
@@ -236,7 +236,7 @@ canvas.get_tk_widget().pack(side="right", fill="both", expand=True)
 - `fill="both"`: Untuk membuat grafik untuk memenuhi ruang yang tersedia.
 - `expand=True`: Agar grafik bersifat responsif, dimana bila user memperbesar jendela, maka grafik akan ikut membesar secara otomatis.
 
-### Melakukan Perulangan
+### 9. Melakukan Perulangan
 ```py
 root.mainloop()
 ```

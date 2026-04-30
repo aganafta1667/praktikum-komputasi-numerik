@@ -131,7 +131,7 @@ root.mainloop()
 ```
 
 ## Penjelasan Kode Program
-bayu&aga
+
 ### Logika Perhitungan Regula Falsi
 ```py
 def hitung_regula_falsi():

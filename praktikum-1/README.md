@@ -184,18 +184,6 @@ def update_grafik(f, a, b, root_val, history):
 - `np.linspace(...)` : Membuat rentang titik-titik koordinat untuk menggambar garis kurva fungsi f(x).
 - `ax.plot(...)` : Menggambar garis bantu (titik-titik abu-abu) yang menghubungkan dua titik batas pada setiap iterasi.
 - `canvas.draw()` : Memperbarui tampilan grafik pada jendela aplikasi agar sesuai dengan hasil perhitungan terbaru.
-  
-### Menampilkan Data pada Tabel (Treeview)
-```py
-cols = ("Iter", "x1", "x2", "xr", "f(xr)", "Error")
-tree = ttk.Treeview(frame_out, columns=cols, show="headings", height=10)
-...
-tree.insert("", "end", values=(i, f"{x1:.4f}", f"{x2:.4f}", f"{xr:.6f}", f"{fxr:.6f}", f"{err:.4f}%"))
-```
-- `ttk.Treeview` : Widget untuk membuat tabel yang rapi di dalam jendela aplikasi.
-- `show="headings"` : Menghilangkan kolom kosong (identitas) di sebelah kiri tabel.
-- `heading(c, text=c)` : Memberikan nama pada setiap kepala kolom.
-- `insert("", "end", values=...)` : Memasukkan baris data hasil perhitungan iterasi ke baris paling bawah tabel.
 
 ### Inisialisasi Jendela Program
 ```py

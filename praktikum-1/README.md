@@ -1,4 +1,4 @@
-# Laporan Praktikum 1 Komputasi Numerik
+# Laporan Praktikum 1 Komputasi Numerik (D) Kelompok 8
 
 |    NRP     |           Nama             |
 | :--------: |       :------------:       |

@@ -8,3 +8,5 @@
 | 5025251067 |     Azka Fairus Syamsa     |
 
 ## [Praktikum 1 - Program Metode Regula Falsi](praktikum-1/README.md)
+
+## [Praktikum 2 - Program Metode Integrasi Romberg](praktikum-2/README.md)

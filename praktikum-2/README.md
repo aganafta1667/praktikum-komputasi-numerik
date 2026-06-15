@@ -172,6 +172,111 @@ root.mainloop()
 ```
 - penjelasan
 
+### Menginisialisasi Jendela Utama Aplikasi
+```py
+root = tk.Tk()
+root.title("Metode Integrasi Romberg")
+root.geometry("1920x1080") 
+```
+- `root = tk.Tk()`: Berfungsi untuk membuat objek jendela utama (main window) dari aplikasi GUI menggunakan pustaka Tkinter.
+- `root.title("Metode Integrasi Romberg")`: Berfungsi untuk mengatur teks pada bilah judul jendela aplikasi menjadi "Metode Integrasi Romberg".
+- `root.geometry("1920x1080")`: Berfungsi untuk mengatur dimensi ukuran default jendela aplikasi saat pertama kali dijalankan.
+
+### Membuat Kontainer dan Komponen Input Parameter
+```py
+frame_in = tk.Frame(root)
+frame_in.pack(pady=10)
+
+tk.Label(frame_in, text="f(x):").grid(row=0, column=0, padx=5)
+entry_f = tk.Entry(frame_in, width=20) 
+entry_f.grid(row=0, column=1) 
+entry_f.insert(0, "4 / (1 + x**2)") 
+
+tk.Label(frame_in, text="Batas a:").grid(row=0, column=2, padx=(15, 5))
+entry_a = tk.Entry(frame_in, width=5) 
+entry_a.grid(row=0, column=3) 
+entry_a.insert(0, "0")
+
+tk.Label(frame_in, text="Batas b:").grid(row=0, column=4, padx=(15, 5))
+entry_b = tk.Entry(frame_in, width=5) 
+entry_b.grid(row=0, column=5) 
+entry_b.insert(0, "1")
+
+tk.Label(frame_in, text="Orde (n):").grid(row=0, column=6, padx=(15, 5))
+entry_n = tk.Entry(frame_in, width=5) 
+entry_n.grid(row=0, column=7) 
+entry_n.insert(0, "5")
+
+tk.Button(frame_in, text="Hitung Integrasi", command=hitung_romberg, bg="#4CAF50", fg="white", font=("Arial", 10, "bold")).grid(row=0, column=8, padx=20)
+```
+- `frame_in = tk.Frame(root)`: Membuat sebuah kontainer khusus di bagian atas jendela untuk mengelompokkan semua komponen input data agar tata letaknya rapi.
+- `tk.Label()`: Membuat label bagi user untuk mengetahui letak pengisian fungsi f(x), batas bawah (a), batas atas (b), dan jumlah orde (n).
+- `tk.Entry()`: Menyediakan kotak teks input sebagai tempat user untuk mengetikkan persamaan matematika dan parameter batas integrasi.
+- `.insert(0, "...")`: Memberikan nilai default pada masing-masing kotak input saat program pertama kali dibuka untuk memudahkan simulasi awal.
+- `.grid(row=..., column=...)`: Mengatur tata letak komponen label dan kotak input menggunakan sistem koordinat baris dan kolom agar tersusun sejajar secara horizontal.
+- `tk.Button(..., command=hitung_romberg)`: Membuat tombol eksekusi yang jika diklik oleh user akan memanggil fungsi hitung_romberg untuk memproses kalkulasi matematika.
+
+### Membuat Komponen Teks Hasil Integrasi
+```py
+lbl_hasil = tk.Label(root, text="Hasil Integrasi: -", font=("Arial", 12, "bold"), fg="darkblue")
+lbl_hasil.pack(pady=5)
+```
+- `lbl_hasil = tk.Label()`: Membuat komponen teks untuk menampilkan nilai integral yang paling akurat.
+- `fg="darkblue" dan font=()`: Mengatur tampilan visual teks agar berwarna biru tua, berukuran lebih besar, dan dicetak tebal.
+- `.pack(pady=5)`: Memasang label hasil di jendela utama dengan memberikan jarak vertikal sebesar 5 piksel dari komponen di atas dan bawahnya.
+
+### Membuat Kontainer Output Data
+```py
+frame_out = tk.Frame(root)
+frame_out.pack(fill="both", expand=True, padx=10, pady=5)
+```
+- `frame_out = tk.Frame(root)`: Membuat objek kontainer  yang berfungsi menampung visualisasi data hasil perhitungan.
+- `fill="both", expand=True`: Mengonfigurasi frame agar ukurannya bersifat responsif, di mana kontainer ini akan otomatis melebar dan memenuhi seluruh sisa ruang kosong yang tersedia pada jendela aplikasi.
+
+### Melakukan Konfigurasi Kontainer Tabel Matriks Romberg
+```py
+frame_tabel_container = tk.LabelFrame(frame_out, text=" Tabel Ekstrapolasi Romberg ", width=1100)
+frame_tabel_container.pack(side="left", fill="both", expand=False)
+frame_tabel_container.grid_propagate(False)
+
+tree_scroll = ttk.Scrollbar(frame_tabel_container, orient="horizontal")
+tree = ttk.Treeview(frame_tabel_container, show="headings", xscrollcommand=tree_scroll.set)
+tree_scroll.config(command=tree.xview)
+
+tree.grid(row=0, column=0, sticky="nsew")
+tree_scroll.grid(row=1, column=0, sticky="ew")
+
+frame_tabel_container.grid_rowconfigure(0, weight=1)
+frame_tabel_container.grid_columnconfigure(0, weight=1)
+```
+- `tk.LabelFrame(..., text="...", width=1100)`: Membuat kontainer tabel khusus di sebelah kiri dan judul teks di atasnya. 
+- `frame_tabel_container.grid_propagate(False)`: Menonaktifkan fitur propagasi otomatis. Hal ini bertujuan agar dimensi lebar kontainer tidak ikut molor atau membesar saat tabel di dalamnya melebar.
+- `ttk.Scrollbar(..., orient="horizontal")`: Membuat komponen scrollbar horizontal yang diletakkan di bagian bawah tabel.t
+- `tk.Treeview(..., show="headings")`: Membuat komponen struktur tabel data untuk menampilkan baris dan kolom matriks segitiga hasil ekstrapolasi Romberg.
+- `xscrollcommand=tree_scroll.set` dan `tree_scroll.config(...)`: Menghubungkan pergeseran antara komponen Treeview dengan komponen Scrollbar horizontal.
+- `.grid(row=..., sticky="nsew")`: Menyusun tabel dan komponen penggeser di dalam kontainer agar tampilan tabel memenuhi kontainer secara penuh.
+
+### Menyematkan Grafik Matplotlib
+```py
+fig, ax = plt.subplots(figsize=(5, 4))
+fig.tight_layout(pad=2.0)
+canvas = FigureCanvasTkAgg(fig, master=frame_out)
+canvas.get_tk_widget().pack(side="right", fill="both", expand=True, padx=(15, 0))
+```
+- `plt.subplots(figsize=(5, 4))`: Menginisialisasi objek figur grafik (fig) dan sumbu koordinat kartesian menggunakan pustaka Matplotlib.
+- `fig.tight_layout(pad=2.0)`: Mengatur otomatis margin dan spasi komponen grafik agar label sumbu dan judul grafik tidak terpotong atau saling tumpang tindih.
+- `FigureCanvasTkAgg(fig, master=frame_out)`: Bertindak sebagai interface connector dan mengonversi figur visual dari Matplotlib menjadi sebuah widget yang dapat dikenali di dalam ekosistem jendela Tkinter.
+- `canvas.get_tk_widget().pack(side="right", ...)`: Menempatkan widget grafik tersebut di area sebelah kanan dalam kontainer output.
+
+### Melakukan Eksekusi Awal dan Loop Utama Aplikasi
+```py
+hitung_romberg()
+
+root.mainloop()
+```
+- `hitung_romberg()`: Memanggil fungsi kalkulasi secara langsung saat program pertama kali dibuka untuk memicu kalkulasi berdasarkan fungsi bawaan.
+- `root.mainloop()`: Memulai siklus perulangan utama aplikasi GUI Tkinter untuk menjaga jendela program tetap terbuka, memantau interaksi user, dan terus memperbarui tampilan grafik serta tabel secara real-time.
+
 ## Screenshot Hasil Program 
 ### Polinomial
 #### `f(x) = 2x^3 + 4x`

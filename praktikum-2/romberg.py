@@ -7,15 +7,17 @@ from tkinter import ttk, messagebox
 def hitung_romberg():
     try:
         f_str = entry_f.get()
-        a, b = float(entry_a.get()), float(entry_b.get())
+        calc_dict = {"np": np, "sin": np.sin, "cos": np.cos, "tan": np.tan, "exp": np.exp, "pi": np.pi, "log": np.log, "ln": np.log}
+        a = float(eval(entry_a.get(), calc_dict))
+        b = float(eval(entry_b.get(), calc_dict))
         n = int(entry_n.get())
 
-        if n < 1 or n > 10:
-            messagebox.showwarning("Peringatan", "Nilai n disarankan antara 1 hingga 10 agar tabel terlihat rapi.")
+        if n < 1 or n > 15:
+            messagebox.showwarning("Peringatan", "Nilai n maksimal adalah 15 agar komputasi tetap stabil.")
             return
         
         def f(x): 
-            return eval(f_str, {"x": x, "np": np, "sin": np.sin, "cos": np.cos, "tan": np.tan, "exp": np.exp, "pi": np.pi})
+            return eval(f_str, {"x": x, "np": np, "sin": np.sin, "cos": np.cos, "tan": np.tan, "exp": np.exp, "pi": np.pi, "log": np.log, "ln": np.log})
 
         R = np.zeros((n, n))
 
@@ -37,14 +39,14 @@ def hitung_romberg():
         tree["columns"] = cols
         for c in cols:
             tree.heading(c, text=c)
-            tree.column(c, width=50 if c == "Iterasi" else 90, anchor="center")
+            tree.column(c, width=60 if c == "Iterasi" else 100, anchor="center")
 
         for k in range(n):
             row_data = [k + 1] + [f"{R[k, j]:.7f}" if j <= k else "" for j in range(n)]
             tree.insert("", "end", values=row_data)
 
         hasil_akhir = R[n-1, n-1]
-        lbl_hasil.config(text=f"Hasil Integrasi Terbaik: {hasil_akhir:.7f}")
+        lbl_hasil.config(text=f"Hasil Integrasi: {hasil_akhir:.7f}")
         
         update_grafik(f, a, b, hasil_akhir)
 
@@ -74,7 +76,7 @@ def update_grafik(f, a, b, luas_area):
 
 root = tk.Tk()
 root.title("Metode Integrasi Romberg")
-root.geometry("900x550") 
+root.geometry("1920x1080") 
 
 frame_in = tk.Frame(root)
 frame_in.pack(pady=10)
@@ -107,15 +109,25 @@ lbl_hasil.pack(pady=5)
 frame_out = tk.Frame(root)
 frame_out.pack(fill="both", expand=True, padx=10, pady=5)
 
-tree_scroll = ttk.Scrollbar(frame_out)
-tree_scroll.pack(side="left", fill="y")
-tree = ttk.Treeview(frame_out, show="headings", yscrollcommand=tree_scroll.set)
-tree_scroll.config(command=tree.yview)
-tree.pack(side="left", fill="both", expand=True)
+frame_tabel_container = tk.LabelFrame(frame_out, text=" Tabel Ekstrapolasi Romberg ", width=1100)
+frame_tabel_container.pack(side="left", fill="both", expand=False)
+frame_tabel_container.grid_propagate(False)
+
+tree_scroll = ttk.Scrollbar(frame_tabel_container, orient="horizontal")
+tree = ttk.Treeview(frame_tabel_container, show="headings", xscrollcommand=tree_scroll.set)
+tree_scroll.config(command=tree.xview)
+
+tree.grid(row=0, column=0, sticky="nsew")
+tree_scroll.grid(row=1, column=0, sticky="ew")
+
+frame_tabel_container.grid_rowconfigure(0, weight=1)
+frame_tabel_container.grid_columnconfigure(0, weight=1)
 
 fig, ax = plt.subplots(figsize=(5, 4))
 fig.tight_layout(pad=2.0)
 canvas = FigureCanvasTkAgg(fig, master=frame_out)
-canvas.get_tk_widget().pack(side="right", fill="both", expand=True)
+canvas.get_tk_widget().pack(side="right", fill="both", expand=True, padx=(15, 0))
+
+hitung_romberg()
 
 root.mainloop()

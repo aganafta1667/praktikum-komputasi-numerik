@@ -103,7 +103,7 @@ entry_n.insert(0, "5")
 
 tk.Button(frame_in, text="Hitung Integrasi", command=hitung_romberg, bg="#4CAF50", fg="white", font=("Arial", 10, "bold")).grid(row=0, column=8, padx=20)
 
-lbl_hasil = tk.Label(root, text="Hasil Integrasi Terbaik: -", font=("Arial", 12, "bold"), fg="darkblue")
+lbl_hasil = tk.Label(root, text="Hasil Integrasi: -", font=("Arial", 12, "bold"), fg="darkblue")
 lbl_hasil.pack(pady=5)
 
 frame_out = tk.Frame(root)

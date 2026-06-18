@@ -178,6 +178,8 @@ def hitung_romberg():
 - `calc_dict & eval(...)`: Membuat kamus (dictionary) kustom yang berfungsi memetakan string teks menjadi fungsi matematika riil. Fitur ini memungkinkan pengguna untuk mengetikkan fungsi trigonometri atau konstanta seperti `sin(x)`, `cos(x)`, `exp(x)`, atau `pi` langsung dari antarmuka tanpa memicu error.
 - `R = np.zeros((n, n))`: Menginisialisasi matriks persegi kosong berukuran $n \times n$ menggunakan NumPy yang nantinya digunakan sebagai wadah penyimpanan Tabel Romberg.
 - `R[0, 0] = ...`: Tahap awal komputasi yang menghitung nilai integral pertama menggunakan Aturan Trapesium (Trapezoidal Rule) dengan 1 segmen selang (orde galat O(h^2)). Rumus matematisnya: $$R_{0, 0} = \frac{h}{2} [f(a) + f(b)]$$
+- `R[k, j] = ...`: Baris ini merupakan inti dari Algoritma Romberg, yaitu menerapkan teknik Ekstrapolasi Richardson. Tujuannya adalah mengeliminasi suku-suku galat secara bertahap agar nilai integrasi menjadi jauh lebih akurat melalui kombinasi linear dari nilai integral pada langkah sebelumnya. Secara matematis, pengisian sel matriks ini mengikuti rumus:
+  $$R_{k, j} = R_{k, j-1} + \frac{R_{k, j-1} - R_{k-1, j-1}}{4^j - 1}$$
 
 ### 2. -
 ```py

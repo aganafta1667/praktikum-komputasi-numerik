@@ -216,7 +216,7 @@ def update_grafik(f, a, b, luas_area):
 - `ax.fill_between(...)`: Berfungsi memberikan efek arsir atau blok warna di area bawah kurva fungsi `f(x)` yang dibatasi oleh titik batas bawah `a` dan batas atas `b`. Parameter `alpha=0.3` mengatur tingkat transparansi warna oranye agar garis kisi (grid) di belakangnya tetap terlihat.
 - `ax.axvline(...)`: Menarik garis vertikal statis secara tegak lurus pada titik koordinat batas bawah `a` (warna merah) dan batas atas `b` (warna hijau) untuk mempertegas batas-batas wilayah integrasi kepada pengguna secara visual.
 
-### 5. Memvisualisasi Grafik Interaktif
+### 5. Spesifikasi Input dan Output Program
 A. Komponen Input
 ```py
 f_str = entry_f.get()

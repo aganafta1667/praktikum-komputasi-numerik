@@ -159,7 +159,7 @@ root.mainloop()
 ```
 
 ## Penjelasan Kode Program
-### 1. Penjelasan Library
+### 1. Mengimpor Library
 ```py
 import numpy as np
 import matplotlib.pyplot as plt
@@ -171,7 +171,7 @@ from tkinter import ttk, messagebox
 - `tkinter` (`tk`, `ttk`, `messagebox`): Pustaka standar Python untuk membuat antarmuka pengguna grafis (GUI). `tk` digunakan untuk membuat jendela utama dan elemen dasar (tombol, label, input teks). `ttk` digunakan untuk elemen GUI yang lebih modern seperti tabel data (`Treeview`), sedangkan `messagebox` digunakan untuk menampilkan jendela pop-up peringatan atau error.
 - `matplotlib` & `FigureCanvasTkAgg`: Pustaka untuk visualisasi data (membuat grafik). Modul `pyplot` digunakan untuk menggambar kurva dan mengarsir area integral. Sementara itu, `FigureCanvasTkAgg` bertindak sebagai "jembatan" yang memungkinkan grafik dari Matplotlib ditempelkan (embedded) langsung ke dalam jendela aplikasi Tkinter.
 
-### 2. Logika Perhitungan (Metode Romberg)
+### 2. Mendefinisikan Fungsi Logika Perhitungan Metode Romberg
 ```py
 def hitung_romberg():
     ...
@@ -193,7 +193,7 @@ def hitung_romberg():
 - `R[k, j] = ...`: Baris ini merupakan inti dari Algoritma Romberg, yaitu menerapkan teknik Ekstrapolasi Richardson. Tujuannya adalah mengeliminasi suku-suku galat secara bertahap agar nilai integrasi menjadi jauh lebih akurat melalui kombinasi linear dari nilai integral pada langkah sebelumnya. Secara matematis, pengisian sel matriks ini mengikuti rumus:
   $$R_{k, j} = R_{k, j-1} + \frac{R_{k, j-1} - R_{k-1, j-1}}{4^j - 1}$$
 
-### 3. Proses Iterasi dan Pembaruan Tabel (Treeview Dinamis)
+### 3. Melakukan Proses Iterasi dan Pembaruan Tabel (Treeview Dinamis)
 ```py
 cols = ["Iterasi"] + [f"O(h^{2*(i+1)})" for i in range(n)]
 tree["columns"] = cols
@@ -205,7 +205,7 @@ for k in range(n):
 - Kolom Dinamis (`cols = ...`): Karena dimensi matriks Romberg bersifat fleksibel tergantung nilai variabel `n` yang dimasukkan pengguna, kolom pada komponen `Treeview` dibuat secara otomatis. Nama kolom diatur untuk merepresentasikan tingkat orde galat teoretisnya, mulai dari O(h^2), O(h^4), O(h^6), hingga O(h^{2n}).
 - Kondisi `if j <= k else ""`: Mengingat skema perhitungan Romberg hanya menghasilkan matriks segitiga bawah (lower triangular matrix), logika kondisional ini memastikan hanya elemen matriks yang valid saja yang dicetak ke dalam tabel. Sisa sel kosong di sebelah kanan akan diisi string kosong (`""`) agar visualisasi tabel tetap rapi.
 
-### 4. Visualisasi Grafik Interaktif
+### 4. Memvisualisasi Grafik Interaktif
 ```py
 def update_grafik(f, a, b, luas_area):
     ...
@@ -216,7 +216,7 @@ def update_grafik(f, a, b, luas_area):
 - `ax.fill_between(...)`: Berfungsi memberikan efek arsir atau blok warna di area bawah kurva fungsi `f(x)` yang dibatasi oleh titik batas bawah `a` dan batas atas `b`. Parameter `alpha=0.3` mengatur tingkat transparansi warna oranye agar garis kisi (grid) di belakangnya tetap terlihat.
 - `ax.axvline(...)`: Menarik garis vertikal statis secara tegak lurus pada titik koordinat batas bawah `a` (warna merah) dan batas atas `b` (warna hijau) untuk mempertegas batas-batas wilayah integrasi kepada pengguna secara visual.
 
-### 5. Visualisasi Grafik Interaktif
+### 5. Memvisualisasi Grafik Interaktif
 A. Komponen Input
 ```py
 f_str = entry_f.get()

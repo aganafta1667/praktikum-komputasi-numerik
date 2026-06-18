@@ -159,8 +159,19 @@ root.mainloop()
 ```
 
 ## Penjelasan Kode Program
+### 1. Penjelasan Library
+```py
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import tkinter as tk
+from tkinter import ttk, messagebox
+```
+- `numpy` (`np`): Pustaka inti untuk komputasi numerik di Python. Pada program ini, `numpy` digunakan untuk membuat matriks perhitungan (`np.zeros`), menghasilkan titik-titik koordinat secara merata untuk grafik (`np.linspace`), serta menyediakan fungsi dan konstanta matematika bawaan (seperti `np.sin`, `np.cos`, `np.pi`).
+- `tkinter` (`tk`, `ttk`, `messagebox`): Pustaka standar Python untuk membuat antarmuka pengguna grafis (GUI). `tk` digunakan untuk membuat jendela utama dan elemen dasar (tombol, label, input teks). `ttk` digunakan untuk elemen GUI yang lebih modern seperti tabel data (`Treeview`), sedangkan `messagebox` digunakan untuk menampilkan jendela pop-up peringatan atau error.
+- `matplotlib` & `FigureCanvasTkAgg`: Pustaka untuk visualisasi data (membuat grafik). Modul `pyplot` digunakan untuk menggambar kurva dan mengarsir area integral. Sementara itu, `FigureCanvasTkAgg` bertindak sebagai "jembatan" yang memungkinkan grafik dari Matplotlib ditempelkan (embedded) langsung ke dalam jendela aplikasi Tkinter.
 
-### 1. Logika Perhitungan (Metode Romberg)
+### 2. Logika Perhitungan (Metode Romberg)
 ```py
 def hitung_romberg():
     ...
@@ -182,7 +193,7 @@ def hitung_romberg():
 - `R[k, j] = ...`: Baris ini merupakan inti dari Algoritma Romberg, yaitu menerapkan teknik Ekstrapolasi Richardson. Tujuannya adalah mengeliminasi suku-suku galat secara bertahap agar nilai integrasi menjadi jauh lebih akurat melalui kombinasi linear dari nilai integral pada langkah sebelumnya. Secara matematis, pengisian sel matriks ini mengikuti rumus:
   $$R_{k, j} = R_{k, j-1} + \frac{R_{k, j-1} - R_{k-1, j-1}}{4^j - 1}$$
 
-### 2. Proses Iterasi dan Pembaruan Tabel (Treeview Dinamis)
+### 3. Proses Iterasi dan Pembaruan Tabel (Treeview Dinamis)
 ```py
 cols = ["Iterasi"] + [f"O(h^{2*(i+1)})" for i in range(n)]
 tree["columns"] = cols
@@ -194,7 +205,7 @@ for k in range(n):
 - Kolom Dinamis (`cols = ...`): Karena dimensi matriks Romberg bersifat fleksibel tergantung nilai variabel `n` yang dimasukkan pengguna, kolom pada komponen `Treeview` dibuat secara otomatis. Nama kolom diatur untuk merepresentasikan tingkat orde galat teoretisnya, mulai dari O(h^2), O(h^4), O(h^6), hingga O(h^{2n}).
 - Kondisi `if j <= k else ""`: Mengingat skema perhitungan Romberg hanya menghasilkan matriks segitiga bawah (lower triangular matrix), logika kondisional ini memastikan hanya elemen matriks yang valid saja yang dicetak ke dalam tabel. Sisa sel kosong di sebelah kanan akan diisi string kosong (`""`) agar visualisasi tabel tetap rapi.
 
-### 3. Visualisasi Grafik Interaktif
+### 4. Visualisasi Grafik Interaktif
 ```py
 def update_grafik(f, a, b, luas_area):
     ...
@@ -205,18 +216,38 @@ def update_grafik(f, a, b, luas_area):
 - `ax.fill_between(...)`: Berfungsi memberikan efek arsir atau blok warna di area bawah kurva fungsi `f(x)` yang dibatasi oleh titik batas bawah `a` dan batas atas `b`. Parameter `alpha=0.3` mengatur tingkat transparansi warna oranye agar garis kisi (grid) di belakangnya tetap terlihat.
 - `ax.axvline(...)`: Menarik garis vertikal statis secara tegak lurus pada titik koordinat batas bawah `a` (warna merah) dan batas atas `b` (warna hijau) untuk mempertegas batas-batas wilayah integrasi kepada pengguna secara visual.
 
-### 4. Visualisasi Grafik Interaktif
+### 5. Visualisasi Grafik Interaktif
 A. Komponen Input
+```py
+f_str = entry_f.get()
+a = float(eval(entry_a.get(), calc_dict))
+b = float(eval(entry_b.get(), calc_dict))
+n = int(entry_n.get())
+
+if n < 1 or n > 15:
+    messagebox.showwarning("Peringatan", "Nilai n maksimal adalah 15 agar komputasi tetap stabil.")
+    return
+```
 - `f(x)` (Fungsi): Persamaan matematika yang akan dihitung integralnya. Diambil melalui perintah `entry_f.get()`.
 - Batas `a` & `b`: Nilai numerik batas bawah dan batas atas integrasi. Diambil menggunakan `eval(entry_a.get(), calc_dict)` agar mendukung input ekspresi matematika (built-in).
 - Iterasi (`n`): Menentukan ukuran matriks Romberg. Diambil menggunakan `int(entry_n.get())`. Terdapat validasi `if n < 1 or n > 15` untuk mencegah komputasi yang terlalu berat dan menjaga stabilitas program.
   
 B. Komponen Output
+```py
+hasil_akhir = R[n-1, n-1]
+lbl_hasil.config(text=f"Hasil Integrasi: {hasil_akhir:.7f}")
+
+for k in range(n):
+    row_data = [k + 1] + [f"{R[k, j]:.7f}" if j <= k else "" for j in range(n)]
+    tree.insert("", "end", values=row_data)
+
+update_grafik(f, a, b, hasil_akhir)
+```
 - Hasil Integrasi Akhir: Mengambil nilai kalkulasi dari sel ujung kanan bawah matriks, yaitu `R[n-1, n-1]`. Titik ini memiliki estimasi galat terkecil. Nilai ini ditampilkan ke UI menggunakan `lbl_hasil.config(...)`.
 - abel Ekstrapolasi: Ditampilkan melalui `tree.insert(...)`, menunjukkan perbaikan nilai integral dari orde rendah ke orde tinggi di setiap iterasi.
 - Grafik Visual: Dieksekusi melalui pemanggilan fungsi `update_grafik(...)`, yang menggambar kurva fungsi, mewarnai area integral, dan menempatkan garis penanda batas secara dinamis.
 
-### 5. Menginisialisasi Jendela Utama Aplikasi
+### 6. Menginisialisasi Jendela Utama Aplikasi
 ```py
 root = tk.Tk()
 root.title("Metode Integrasi Romberg")
@@ -226,7 +257,7 @@ root.geometry("1920x1080")
 - `root.title("Metode Integrasi Romberg")`: Berfungsi untuk mengatur teks pada bilah judul jendela aplikasi menjadi "Metode Integrasi Romberg".
 - `root.geometry("1920x1080")`: Berfungsi untuk mengatur dimensi ukuran default jendela aplikasi saat pertama kali dijalankan.
 
-### 6. Membuat Kontainer dan Komponen Input Parameter
+### 7. Membuat Kontainer dan Komponen Input Parameter
 ```py
 frame_in = tk.Frame(root)
 frame_in.pack(pady=10)
@@ -260,7 +291,7 @@ tk.Button(frame_in, text="Hitung Integrasi", command=hitung_romberg, bg="#4CAF50
 - `.grid(row=..., column=...)`: Mengatur tata letak komponen label dan kotak input menggunakan sistem koordinat baris dan kolom agar tersusun sejajar secara horizontal.
 - `tk.Button(..., command=hitung_romberg)`: Membuat tombol eksekusi yang jika diklik oleh user akan memanggil fungsi hitung_romberg untuk memproses kalkulasi matematika.
 
-### 7. Membuat Komponen Teks Hasil Integrasi
+### 8. Membuat Komponen Teks Hasil Integrasi
 ```py
 lbl_hasil = tk.Label(root, text="Hasil Integrasi: -", font=("Arial", 12, "bold"), fg="darkblue")
 lbl_hasil.pack(pady=5)
@@ -269,7 +300,7 @@ lbl_hasil.pack(pady=5)
 - `fg="darkblue" dan font=()`: Mengatur tampilan visual teks agar berwarna biru tua, berukuran lebih besar, dan dicetak tebal.
 - `.pack(pady=5)`: Memasang label hasil di jendela utama dengan memberikan jarak vertikal sebesar 5 piksel dari komponen di atas dan bawahnya.
 
-### 8. Membuat Kontainer Output Data
+### 9. Membuat Kontainer Output Data
 ```py
 frame_out = tk.Frame(root)
 frame_out.pack(fill="both", expand=True, padx=10, pady=5)
@@ -277,7 +308,7 @@ frame_out.pack(fill="both", expand=True, padx=10, pady=5)
 - `frame_out = tk.Frame(root)`: Membuat objek kontainer  yang berfungsi menampung visualisasi data hasil perhitungan.
 - `fill="both", expand=True`: Mengonfigurasi frame agar ukurannya bersifat responsif, di mana kontainer ini akan otomatis melebar dan memenuhi seluruh sisa ruang kosong yang tersedia pada jendela aplikasi.
 
-### 9. Melakukan Konfigurasi Kontainer Tabel Matriks Romberg
+### 10. Melakukan Konfigurasi Kontainer Tabel Matriks Romberg
 ```py
 frame_tabel_container = tk.LabelFrame(frame_out, text=" Tabel Ekstrapolasi Romberg ", width=1100)
 frame_tabel_container.pack(side="left", fill="both", expand=False)
@@ -300,7 +331,7 @@ frame_tabel_container.grid_columnconfigure(0, weight=1)
 - `xscrollcommand=tree_scroll.set` dan `tree_scroll.config(...)`: Menghubungkan pergeseran antara komponen Treeview dengan komponen Scrollbar horizontal.
 - `.grid(row=..., sticky="nsew")`: Menyusun tabel dan komponen penggeser di dalam kontainer agar tampilan tabel memenuhi kontainer secara penuh.
 
-### 10. Menyematkan Grafik Matplotlib
+### 11. Menyematkan Grafik Matplotlib
 ```py
 fig, ax = plt.subplots(figsize=(5, 4))
 fig.tight_layout(pad=2.0)
@@ -312,7 +343,7 @@ canvas.get_tk_widget().pack(side="right", fill="both", expand=True, padx=(15, 0)
 - `FigureCanvasTkAgg(fig, master=frame_out)`: Bertindak sebagai interface connector dan mengonversi figur visual dari Matplotlib menjadi sebuah widget yang dapat dikenali di dalam ekosistem jendela Tkinter.
 - `canvas.get_tk_widget().pack(side="right", ...)`: Menempatkan widget grafik tersebut di area sebelah kanan dalam kontainer output.
 
-### 11. Melakukan Eksekusi Awal dan Loop Utama Aplikasi
+### 12. Melakukan Eksekusi Awal dan Loop Utama Aplikasi
 ```py
 hitung_romberg()
 

@@ -212,9 +212,16 @@ def update_grafik(f, a, b, luas_area):
     ax.fill_between(x_fill, y_fill, alpha=0.3, color="orange", label=f"Area ≈ {luas_area:.5f}")
     ax.axvline(a, color='red', linestyle=':', label=f"Batas a = {a}")
     ax.axvline(b, color='green', linestyle=':', label=f"Batas b = {b}")
+
+    ax.set_title("Visualisasi Area Integrasi")
+    ax.legend(loc="best", fontsize=9)
+    canvas.draw()
 ```
 - `ax.fill_between(...)`: Berfungsi memberikan efek arsir atau blok warna di area bawah kurva fungsi `f(x)` yang dibatasi oleh titik batas bawah `a` dan batas atas `b`. Parameter `alpha=0.3` mengatur tingkat transparansi warna oranye agar garis kisi (grid) di belakangnya tetap terlihat.
 - `ax.axvline(...)`: Menarik garis vertikal statis secara tegak lurus pada titik koordinat batas bawah `a` (warna merah) dan batas atas `b` (warna hijau) untuk mempertegas batas-batas wilayah integrasi kepada pengguna secara visual.
+- `ax.set_title(...)`: Memberikan judul utama pada bagian atas grafik ("Visualisasi Area Integrasi") agar pengguna mengerti konteks dari gambar yang ditampilkan.
+- `ax.legend(...)`: Memunculkan kotak legenda yang berisi keterangan makna dari setiap warna dan garis pada grafik (seperti label kurva f(x), area integrasi, dan garis batas). Penggunaan parameter `loc="best"` sangat praktis karena memerintahkan algoritma Matplotlib untuk secara otomatis mencari area kosong di dalam grafik dan meletakkan legenda di sana, sehingga tidak menutupi kurva atau area arsiran.
+- `canvas.draw()`: Ini adalah perintah pamungkas dan paling krusial. Setelah semua elemen (kurva, batas, warna area, judul, dan legenda) selesai diatur di latar belakang, `canvas.draw()` bertugas untuk "menggambar ulang" (render) kanvas Tkinter agar semua perubahan visual tersebut benar-benar muncul dan diperbarui di layar antarmuka pengguna.
 
 ### 5. Spesifikasi Input dan Output Program
 A. Komponen Input

@@ -210,7 +210,9 @@ A. Komponen Input
 - `f(x)` (Fungsi): Persamaan matematika yang akan dihitung integralnya. Diambil melalui perintah `entry_f.get()`.
 - Batas `a` & `b`: Nilai numerik batas bawah dan batas atas integrasi. Diambil menggunakan `eval(entry_a.get(), calc_dict)` agar mendukung input ekspresi matematika (built-in).
 - Iterasi (`n`): Menentukan ukuran matriks Romberg. Diambil menggunakan `int(entry_n.get())`. Terdapat validasi `if n < 1 or n > 15` untuk mencegah komputasi yang terlalu berat dan menjaga stabilitas program.
+
 B. Komponen Output
+
 - Hasil Integrasi Akhir: Mengambil nilai kalkulasi dari sel ujung kanan bawah matriks, yaitu `R[n-1, n-1]`. Titik ini memiliki estimasi galat terkecil. Nilai ini ditampilkan ke UI menggunakan `lbl_hasil.config(...)`.
 - abel Ekstrapolasi: Ditampilkan melalui `tree.insert(...)`, menunjukkan perbaikan nilai integral dari orde rendah ke orde tinggi di setiap iterasi.
 - Grafik Visual: Dieksekusi melalui pemanggilan fungsi `update_grafik(...)`, yang menggambar kurva fungsi, mewarnai area integral, dan menempatkan garis penanda batas secara dinamis.

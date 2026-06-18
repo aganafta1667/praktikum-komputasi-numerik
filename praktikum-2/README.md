@@ -178,15 +178,38 @@ def hitung_romberg():
 - `calc_dict & eval(...)`: Membuat kamus (dictionary) kustom yang berfungsi memetakan string teks menjadi fungsi matematika riil. Fitur ini memungkinkan pengguna untuk mengetikkan fungsi trigonometri atau konstanta seperti `sin(x)`, `cos(x)`, `exp(x)`, atau `pi` langsung dari antarmuka tanpa memicu error.
 - `R = np.zeros((n, n))`: Menginisialisasi matriks persegi kosong berukuran $n \times n$ menggunakan NumPy yang nantinya digunakan sebagai wadah penyimpanan Tabel Romberg.
 - `R[0, 0] = ...`: Tahap awal komputasi yang menghitung nilai integral pertama menggunakan Aturan Trapesium (Trapezoidal Rule) dengan 1 segmen selang (orde galat O(h^2)). Rumus matematisnya: $$R_{0, 0} = \frac{h}{2} [f(a) + f(b)]$$
+- `R[k, 0] = ...`: Mengisi kolom pertama matriks dengan mengevaluasi Aturan Trapesium Komposit (menambahkan titik-titik pias baru di tengah selang sebelumnya). Rumus matematisnya: $$R_{k, 0} = \frac{1}{2} R_{k-1, 0} + h \sum_{i=1}^{2^{k-1}} f(a + (2i - 1)h)$$
 - `R[k, j] = ...`: Baris ini merupakan inti dari Algoritma Romberg, yaitu menerapkan teknik Ekstrapolasi Richardson. Tujuannya adalah mengeliminasi suku-suku galat secara bertahap agar nilai integrasi menjadi jauh lebih akurat melalui kombinasi linear dari nilai integral pada langkah sebelumnya. Secara matematis, pengisian sel matriks ini mengikuti rumus:
   $$R_{k, j} = R_{k, j-1} + \frac{R_{k, j-1} - R_{k-1, j-1}}{4^j - 1}$$
 
-### 2. -
+### 2. Proses Iterasi dan Pembaruan Tabel (Treeview Dinamis)
 ```py
-[potongan kode]
+cols = ["Iterasi"] + [f"O(h^{2*(i+1)})" for i in range(n)]
+tree["columns"] = cols
+...
+for k in range(n):
+    row_data = [k + 1] + [f"{R[k, j]:.7f}" if j <= k else "" for j in range(n)]
+    tree.insert("", "end", values=row_data)
 ```
-- penjelasan
+- Kolom Dinamis (`cols = ...`): Karena dimensi matriks Romberg bersifat fleksibel tergantung nilai variabel `n` yang dimasukkan pengguna, kolom pada komponen `Treeview` dibuat secara otomatis. Nama kolom diatur untuk merepresentasikan tingkat orde galat teoretisnya, mulai dari O(h^2), O(h^4), O(h^6), hingga O(h^{2n}).
+- Kondisi `if j <= k else ""`: Mengingat skema perhitungan Romberg hanya menghasilkan matriks segitiga bawah (lower triangular matrix), logika kondisional ini memastikan hanya elemen matriks yang valid saja yang dicetak ke dalam tabel. Sisa sel kosong di sebelah kanan akan diisi string kosong (`""`) agar visualisasi tabel tetap rapi.
 
+### 3. Visualisasi Grafik Interaktif
+```py
+def update_grafik(f, a, b, luas_area):
+    ...
+    ax.fill_between(x_fill, y_fill, alpha=0.3, color="orange", label=f"Area ≈ {luas_area:.5f}")
+    ax.axvline(a, color='red', linestyle=':', label=f"Batas a = {a}")
+    ax.axvline(b, color='green', linestyle=':', label=f"Batas b = {b}")
+```
+- `ax.fill_between(...)`: Berfungsi memberikan efek arsir atau blok warna di area bawah kurva fungsi `f(x)` yang dibatasi oleh titik batas bawah `a` dan batas atas `b`. Parameter `alpha=0.3` mengatur tingkat transparansi warna oranye agar garis kisi (grid) di belakangnya tetap terlihat.
+- `ax.axvline(...)`: Menarik garis vertikal statis secara tegak lurus pada titik koordinat batas bawah `a` (warna merah) dan batas atas `b` (warna hijau) untuk mempertegas batas-batas wilayah integrasi kepada pengguna secara visual.
+
+### 4. Visualisasi Grafik Interaktif
+A. Komponen Input
+    - `f(x)` (Fungsi): Persamaan matematika yang akan dihitung integralnya. Diambil melalui perintah `entry_f.get()`.
+    - Batas `a` & `b`: Nilai numerik batas bawah dan batas atas integrasi. Diambil menggunakan `eval(entry_a.get(), calc_dict)` agar mendukung input ekspresi matematika (built-in).
+    - Iterasi (`n`): Menentukan ukuran matriks Romberg. Diambil menggunakan `int(entry_n.get())`. Terdapat validasi `if n < 1 or n > 15` untuk mencegah komputasi yang terlalu berat dan menjaga stabilitas program.
 ### Menginisialisasi Jendela Utama Aplikasi
 ```py
 root = tk.Tk()

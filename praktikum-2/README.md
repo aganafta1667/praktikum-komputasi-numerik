@@ -207,9 +207,9 @@ def update_grafik(f, a, b, luas_area):
 
 ### 4. Visualisasi Grafik Interaktif
 A. Komponen Input
-    - `f(x)` (Fungsi): Persamaan matematika yang akan dihitung integralnya. Diambil melalui perintah `entry_f.get()`.
-    - Batas `a` & `b`: Nilai numerik batas bawah dan batas atas integrasi. Diambil menggunakan `eval(entry_a.get(), calc_dict)` agar mendukung input ekspresi matematika (built-in).
-    - Iterasi (`n`): Menentukan ukuran matriks Romberg. Diambil menggunakan `int(entry_n.get())`. Terdapat validasi `if n < 1 or n > 15` untuk mencegah komputasi yang terlalu berat dan menjaga stabilitas program.
+- `f(x)` (Fungsi): Persamaan matematika yang akan dihitung integralnya. Diambil melalui perintah `entry_f.get()`.
+- Batas `a` & `b`: Nilai numerik batas bawah dan batas atas integrasi. Diambil menggunakan `eval(entry_a.get(), calc_dict)` agar mendukung input ekspresi matematika (built-in).
+- Iterasi (`n`): Menentukan ukuran matriks Romberg. Diambil menggunakan `int(entry_n.get())`. Terdapat validasi `if n < 1 or n > 15` untuk mencegah komputasi yang terlalu berat dan menjaga stabilitas program.
 ### Menginisialisasi Jendela Utama Aplikasi
 ```py
 root = tk.Tk()

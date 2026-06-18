@@ -160,11 +160,24 @@ root.mainloop()
 
 ## Penjelasan Kode Program
 
-### 1. Langkah2
+### 1. Logika Perhitungan (Metode Romberg)
 ```py
-[potongan kode]
+def hitung_romberg():
+    ...
+    calc_dict = {"np": np, "sin": np.sin, "cos": np.cos, ...}
+    a = float(eval(entry_a.get(), calc_dict))
+    ...
+    R = np.zeros((n, n))
+    R[0, 0] = (h / 2.0) * (f(a) + f(b))
+    
+    for k in range(1, n):
+        ...
+        for j in range(1, k + 1):
+            R[k, j] = R[k, j-1] + (R[k, j-1] - R[k-1, j-1]) / ((4**j) - 1)
 ```
-- penjelasan
+- `calc_dict & eval(...)`: Membuat kamus (dictionary) kustom yang berfungsi memetakan string teks menjadi fungsi matematika riil. Fitur ini memungkinkan pengguna untuk mengetikkan fungsi trigonometri atau konstanta seperti `sin(x)`, `cos(x)`, `exp(x)`, atau `pi` langsung dari antarmuka tanpa memicu error.
+- `R = np.zeros((n, n))`: Menginisialisasi matriks persegi kosong berukuran $n \times n$ menggunakan NumPy yang nantinya digunakan sebagai wadah penyimpanan Tabel Romberg.
+- `R[0, 0] = ...`: Tahap awal komputasi yang menghitung nilai integral pertama menggunakan Aturan Trapesium (Trapezoidal Rule) dengan 1 segmen selang (orde galat $O(h^2)$). Rumus matematisnya: $$R_{0, 0} = \frac{h}{2} [f(a) + f(b)]$$
 
 ### 2. -
 ```py

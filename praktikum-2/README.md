@@ -9,15 +9,29 @@
 
 
 ## Metode Integrasi Romberg
-Jelaskan pengertiannya disini
+Metode Integrasi Romberg adalah salah satu metode numerik untuk menghitung nilai integral tentu suatu fungsi dengan tingkat akurasi yang tinggi. Metode ini bekerja dengan mengombinasikan hasil perhitungan Metode Trapesium pada beberapa ukuran segmen (h) yang berbeda, kemudian melakukan ekstrapolasi Richardson untuk mengurangi galat (error) secara bertahap. Dengan pendekatan ini, Metode Romberg dapat menghasilkan nilai integral yang jauh lebih akurat dibandingkan Metode Trapesium biasa, meskipun jumlah segmen yang digunakan relatif sedikit.
+
+<img width="904" height="297" alt="image" src="https://github.com/user-attachments/assets/25fafd50-531d-4506-a367-6d107d58c8ff" />
 
 
 ## Cara Pengerjaan Metode Integrasi Romberg
-### 1. Jelaskan
+**Langkah 1 :** Tentukan fungsi f(x) yang akan diintegralkan beserta batas bawah (a) dan batas atas (b).
 
-### 2. Jelaskan
+**Langkah 2 :** Hitung nilai integral menggunakan Metode Trapesium untuk beberapa ukuran segmen yang berbeda (misalnya dengan n = 1, 2, 4, 8, ... segmen), sehingga diperoleh nilai-nilai I(h).
 
-### 3. Jelaskan
+**Langkah 3 :** Susun hasil perhitungan tersebut ke dalam tabel Romberg, dengan kolom pertama berisi hasil Metode Trapesium.
+
+**Langkah 4 :** Lakukan ekstrapolasi Richardson untuk menghitung kolom-kolom berikutnya menggunakan rumus.
+- Setiap kolom baru menggunakan kombinasi dua nilai pada kolom sebelumnya untuk mengurangi orde galat.
+
+**Langkah 5 :** Ulangi proses ekstrapolasi hingga selisih antar nilai pada kolom terakhir mendekati toleransi eror yang telah ditentukan, maka nilai tersebut adalah hasil integral yang dicari.
+
+**Rumus Integrasi Romberg**
+- Rumus rekursif:
+<img width="238" height="77" alt="Screenshot 2026-06-19 103237" src="https://github.com/user-attachments/assets/5956c01c-08ce-4e21-897f-6816fdf72776" />
+
+- Untuk iterasi pertama (j = 1) menggunakan aturan dasar Trapesium
+<img width="455" height="137" alt="Screenshot 2026-06-19 103356" src="https://github.com/user-attachments/assets/bcfa898c-ddb6-4ab3-8759-96b16efb236f" />
 
 
 ## Implementasi Algoritma Metode Integrasi Romberg (python)

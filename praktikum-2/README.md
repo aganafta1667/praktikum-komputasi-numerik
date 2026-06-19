@@ -173,7 +173,7 @@ root.mainloop()
 ```
 
 ## Penjelasan Kode Program
-### 1. Mengimpor Library
+### 1. Mengimport Library
 ```py
 import numpy as np
 import matplotlib.pyplot as plt
@@ -237,7 +237,7 @@ def update_grafik(f, a, b, luas_area):
 - `ax.legend(...)`: Memunculkan kotak legenda yang berisi keterangan makna dari setiap warna dan garis pada grafik (seperti label kurva f(x), area integrasi, dan garis batas). Penggunaan parameter `loc="best"` sangat praktis karena memerintahkan algoritma Matplotlib untuk secara otomatis mencari area kosong di dalam grafik dan meletakkan legenda di sana, sehingga tidak menutupi kurva atau area arsiran.
 - `canvas.draw()`: Ini adalah perintah pamungkas dan paling krusial. Setelah semua elemen (kurva, batas, warna area, judul, dan legenda) selesai diatur di latar belakang, `canvas.draw()` bertugas untuk "menggambar ulang" (render) kanvas Tkinter agar semua perubahan visual tersebut benar-benar muncul dan diperbarui di layar antarmuka pengguna.
 
-### 5. Spesifikasi Input dan Output Program
+### 5. Menspesifikasi Input dan Output Program
 A. Komponen Input
 ```py
 f_str = entry_f.get()
